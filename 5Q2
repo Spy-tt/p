@@ -1,0 +1,47 @@
+Create a JSP page for an online multiple choice test. The questions are randomly selected
+from a database and displayed on the screen. The choices are displayed using radio
+buttons. When the user clicks on next, the next question is displayed. When the user
+clicks on submit, display the total score on the screen. 
+-------------------------------------------------------------------------------------------------------
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Online Test</title>
+</head>
+<body>
+    <form action="submit.jsp" method="post">
+        <%
+     
+        %>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Online Test Results</title>
+</head>
+<body>
+    <%
+        int score = 0;
+        // Retrieve user answers from form data
+        // Calculate score based on correct answers
+        // Display score to user
+    %>
+</body>
+</html>

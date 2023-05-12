@@ -1,0 +1,101 @@
+2 Write a Java program to accept the
+details of Employee (Eno, EName,
+Designation, Salary) from a user and
+store it into the database. (Use Swing)
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+
+public class EmployeeDetails extends JFrame implements ActionListener {
+    JLabel l1, l2, l3, l4;
+    JTextField tf1, tf2, tf3, tf4;
+    JButton btn1, btn2;
+    JPanel panel;
+
+    EmployeeDetails() {
+        //creating labels
+        l1 = new JLabel("Eno:");
+        l2 = new JLabel("EName:");
+        l3 = new JLabel("Designation:");
+        l4 = new JLabel("Salary:");
+
+        //creating textfields
+        tf1 = new JTextField();
+        tf2 = new JTextField();
+        tf3 = new JTextField();
+        tf4 = new JTextField();
+
+        //creating buttons
+        btn1 = new JButton("Save");
+        btn2 = new JButton("Reset");
+
+        //creating panel
+        panel = new JPanel(new GridLayout(5, 2));
+        panel.add(l1);
+        panel.add(tf1);
+        panel.add(l2);
+        panel.add(tf2);
+        panel.add(l3);
+        panel.add(tf3);
+        panel.add(l4);
+        panel.add(tf4);
+        panel.add(btn1);
+        panel.add(btn2);
+
+        //adding action listeners to the buttons
+        btn1.addActionListener(this);
+        btn2.addActionListener(this);
+
+        //setting frame properties
+        setTitle("Employee Details");
+        add(panel, BorderLayout.CENTER);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        String action = ae.getActionCommand();
+        if (action.equals("Save")) {
+            try {
+                //loading the JDBC driver
+                Class.forName("com.mysql.jdbc.Driver");
+                //creating a connection to the database
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/employees", "root", "");
+                //creating a prepared statement to insert the employee details into the database
+                PreparedStatement pst = con.prepareStatement("insert into employee(eno, ename, designation, salary) values(?,?,?,?)");
+                //setting the values for the prepared statement
+                pst.setString(1, tf1.getText());
+                pst.setString(2, tf2.getText());
+                pst.setString(3, tf3.getText());
+                pst.setString(4, tf4.getText());
+                //executing the prepared statement
+                int i = pst.executeUpdate();
+                if (i > 0) {
+                    JOptionPane.showMessageDialog(null, "Employee details saved successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Unable to save employee details.");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (action.equals("Reset")) {
+            //clearing the textfields
+            tf1.setText("");
+            tf2.setText("");
+            tf3.setText("");
+            tf4.setText("");
+        }
+    }
+
+    public static void main(String[] args) {
+        new EmployeeDetails();
+    }
+}
+

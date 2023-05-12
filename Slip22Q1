@@ -1,0 +1,128 @@
+Write a Menu Driven program in Java for the following: Assume Employee table with
+attributes (ENo, EName, Salary) is already created. 1. Insert 2. Update 3. Display 4.
+Exit. 
+---------------------------------------------------------------------------------
+
+import java.sql.*;
+
+public class EmployeeManagementSystem {
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost/EMP";
+    static final String USER = "root";
+    static final String PASS = "password";
+
+    static Connection conn = null;
+    static Statement stmt = null;
+
+    public static void main(String[] args) {
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+
+            int choice;
+            do {
+                System.out.println("Employee Management System");
+                System.out.println("1. Insert Employee");
+                System.out.println("2. Update Employee");
+                System.out.println("3. Display Employees");
+                System.out.println("4. Exit");
+                System.out.print("Enter your choice: ");
+
+                choice = Integer.parseInt(System.console().readLine());
+
+                switch (choice) {
+                    case 1:
+                        insertEmployee();
+                        break;
+                    case 2:
+                        updateEmployee();
+                        break;
+                    case 3:
+                        displayEmployees();
+                        break;
+                    case 4:
+                        System.out.println("Exiting program...");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                        break;
+                }
+            } while (choice != 4);
+
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertEmployee() {
+        try {
+            System.out.print("Enter employee number: ");
+            int empno = Integer.parseInt(System.console().readLine());
+
+            System.out.print("Enter employee name: ");
+            String ename = System.console().readLine();
+
+            System.out.print("Enter employee salary: ");
+            double salary = Double.parseDouble(System.console().readLine());
+
+            String sql = "INSERT INTO Employee (ENo, EName, Salary) VALUES (?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, empno);
+            pstmt.setString(2, ename);
+            pstmt.setDouble(3, salary);
+            pstmt.executeUpdate();
+
+            System.out.println("Employee inserted successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateEmployee() {
+        try {
+            System.out.print("Enter employee number: ");
+            int empno = Integer.parseInt(System.console().readLine());
+
+            System.out.print("Enter new salary: ");
+            double salary = Double.parseDouble(System.console().readLine());
+
+            String sql = "UPDATE Employee SET Salary = ? WHERE ENo = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setDouble(1, salary);
+            pstmt.setInt(2, empno);
+            int rowsUpdated = pstmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Employee updated successfully.");
+            } else {
+                System.out.println("Employee not found.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void displayEmployees() {
+        try {
+            String sql = "SELECT * FROM Employee";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            System.out.println("Employee Table");
+            System.out.println("ENo\tEName\tSalary");
+            System.out.println("----------------------------------------");
+            while (rs.next()) {
+                int empno = rs.getInt("ENo");
+                String ename = rs.getString("EName");
+                double salary = rs.getDouble("Salary");
+                System.out.println(empno + "\t" + ename + "\t" + salary);
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

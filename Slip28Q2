@@ -1,0 +1,17 @@
+
+Write a java program to display name of currently executing Thread in multithreading.
+
+
+
+public class ThreadNameDemo {
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Thread name: " + Thread.currentThread().getName());
+            }
+        });
+
+        t1.start();
+    }
+}

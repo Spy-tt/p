@@ -1,0 +1,63 @@
+Write a JSP script to accept username and password from user, if they are same then
+display “Login Successfully” message in Login.html file, otherwise display “Login
+Failed” Message in Error.html file.
+------------------------------------------------------------------------------------
+
+<%@ page language="java" %>
+<%@ page import="java.io.*, java.util.*" %>
+<%
+   
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
+
+    
+    if(username.equals(password)) {
+        
+        response.sendRedirect("login-success.jsp");
+    } else {
+        
+        response.sendRedirect("login-error.jsp");
+    }
+%>
+
+--------------------------------------------------------------------------------
+
+
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h1>Login Page</h1>
+    <form action="login.jsp" method="post">
+        Username: <input type="text" name="username"><br>
+        Password: <input type="password" name="password"><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+-------------------------------------------------------------------------
+
+
+<%@ page language="java" %>
+<html>
+<head>
+    <title>Login Successful</title>
+</head>
+<body>
+    <h1>Login Successful</h1>
+</body>
+</html>
+
+
+-----------------------------------------------------------------
+
+<%@ page language="java" %>
+<html>
+<head>
+    <title>Login Failed</title>
+</head>
+<body>
+    <h1>Login Failed</h1>
+</body>
+</html>

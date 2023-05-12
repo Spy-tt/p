@@ -1,0 +1,39 @@
+Write a JSP program which accepts UserName in a TextBox and greets the user
+according to the time on server machine. 
+
+-------------------------------------------------------------------------
+
+<%@page import="java.util.Date"%>
+<html>
+<head>
+    <title>Welcome Page</title>
+</head>
+<body>
+    <%
+        String userName = request.getParameter("userName");
+        Date date = new Date();
+        int hours = date.getHours();
+        String greeting = "";
+        
+        if (hours >= 0 && hours < 12) {
+            greeting = "Good Morning";
+        } else if (hours >= 12 && hours < 16) {
+            greeting = "Good Afternoon";
+        } else if (hours >= 16 && hours < 20) {
+            greeting = "Good Evening";
+        } else {
+            greeting = "Good Night";
+        }
+        
+        if (userName != null && !userName.trim().isEmpty()) {
+            out.println("<h1>" + greeting + ", " + userName + "!</h1>");
+        } else {
+            out.println("<h1>Please enter your name.</h1>");
+        }
+    %>
+    <form method="post">
+        Enter your name: <input type="text" name="userName"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

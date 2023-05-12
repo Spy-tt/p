@@ -1,0 +1,40 @@
+. Write a java program to scroll the text from left to right continuously. 
+
+----------------------------------------------------------------------------------------
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class TextScrollingDemo {
+    public static void main(String[] args) {
+        String text = "This is a scrolling text demo! ";
+        int delay = 100; 
+        int width = 300; 
+        int height = 50; 
+
+        JLabel label = new JLabel(text);
+
+        JFrame frame = new JFrame("Text Scrolling Demo");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(width, height);
+        frame.add(label);
+        frame.setVisible(true);
+
+        while (true) {
+
+            int x = label.getLocation().x;
+
+            if (x < -label.getWidth()) {
+                x = width;
+            }
+
+            label.setLocation(x - 1, 0);
+
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

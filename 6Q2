@@ -1,0 +1,119 @@
+Write a java program to simulate traffic signal using threads. 
+----------------------------------------------------------------------
+public class TrafficSignal {
+
+    public static void main(String[] args) {
+        TrafficLight trafficLight = new TrafficLight();
+
+    
+        Thread redLight = new Thread(new RedLight(trafficLight));
+        Thread yellowLight = new Thread(new YellowLight(trafficLight));
+        Thread greenLight = new Thread(new GreenLight(trafficLight));
+
+    
+        redLight.start();
+        yellowLight.start();
+        greenLight.start();
+    }
+}
+
+class TrafficLight {
+    private String currentLight = "RED";
+
+    
+    public synchronized void changeLight() throws InterruptedException {
+        if (currentLight.equals("RED")) {
+            currentLight = "GREEN";
+            Thread.sleep(5000); 
+        } else if (currentLight.equals("GREEN")) {
+            currentLight = "YELLOW";
+            Thread.sleep(2000); 
+        } else if (currentLight.equals("YELLOW")) {
+            currentLight = "RED";
+            Thread.sleep(3000); 
+        }
+        notifyAll(); 
+    }
+
+    public synchronized String getCurrentLight() {
+        return currentLight;
+    }
+}
+
+class RedLight implements Runnable {
+    private TrafficLight trafficLight;
+
+    public RedLight(TrafficLight trafficLight) {
+        this.trafficLight = trafficLight;
+    }
+
+ 
+    public void run() {
+        while (true) {
+            try {
+               
+                if (trafficLight.getCurrentLight().equals("RED")) {
+                    System.out.println("RED light is ON");
+                    Thread.sleep(3000); 
+                    trafficLight.changeLight(); 
+                } else {
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+class YellowLight implements Runnable {
+    private TrafficLight trafficLight;
+
+    public YellowLight(TrafficLight trafficLight) {
+        this.trafficLight = trafficLight;
+    }
+
+    
+    public void run() {
+        while (true) {
+            try {
+                
+                if (trafficLight.getCurrentLight().equals("YELLOW")) {
+                    System.out.println("YELLOW light is ON");
+                    Thread.sleep(2000); 
+                    trafficLight.changeLight(); 
+                } else {
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+class GreenLight implements Runnable {
+    private TrafficLight trafficLight;
+
+    public GreenLight(TrafficLight trafficLight) {
+        this.trafficLight = trafficLight;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+               
+                if (trafficLight.getCurrentLight().equals("GREEN")) {
+                    System.out.println("GREEN light is ON");
+                    Thread.sleep(5000);
+                    trafficLight.changeLight();
+                } else {
+                    wait();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

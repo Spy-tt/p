@@ -1,0 +1,22 @@
+Write a Java program using Spring to display the message “If you can't explain it
+simply, you don't understand it well enough”
+-------------------------------------------------------------------------
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class DisplayMessage {
+
+    public static void main(String[] args) {
+        
+   
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+
+     
+        Message message = context.getBean("message", Message.class);
+
+
+        System.out.println(message.getMessage());
+
+        context.close();
+    }
+
+}

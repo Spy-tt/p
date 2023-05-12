@@ -1,0 +1,64 @@
+Write a Multithreading program in java to display the number’s between 1 to 100
+continuously in a TextField by clicking on button. (Use Runnable Interface). 
+--------------------------------------------------------------------------------
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class NumberDisplay extends JFrame implements Runnable, ActionListener {
+    private JTextField textField;
+    private JButton startButton, stopButton;
+    private Thread thread;
+    private volatile boolean running;
+
+    public NumberDisplay() {
+        setTitle("Number Display");
+        setSize(300, 100);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        textField = new JTextField(20);
+        startButton = new JButton("Start");
+        stopButton = new JButton("Stop");
+
+        startButton.addActionListener(this);
+        stopButton.addActionListener(this);
+
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new FlowLayout());
+        contentPane.add(textField);
+        contentPane.add(startButton);
+        contentPane.add(stopButton);
+    }
+
+    public void run() {
+        try {
+            int num = 1;
+            while (running) {
+                textField.setText(Integer.toString(num));
+                num = (num % 100) + 1; 
+                Thread.sleep(1000); 
+            }
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted.");
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == startButton) {
+            if (thread == null) {
+                running = true;
+                thread = new Thread(this);
+                thread.start();
+            }
+        } else if (e.getSource() == stopButton) {
+            running = false;
+            thread = null;
+        }
+    }
+
+    public static void main(String[] args) {
+        NumberDisplay frame = new NumberDisplay();
+        frame.setVisible(true);
+    }
+}

@@ -1,0 +1,41 @@
+Write a Java program to show lifecycle (creation, sleep, and dead) of a thread. Program
+should print randomly the name of thread and value of sleep time. The name of the
+thread should be hard coded through constructor. The sleep time of a thread will be a
+random integer in the range 0 to 4999. 
+------------------------------------------------------------------------------------------------------
+
+import java.util.Random;
+
+public class ThreadLifecycle implements Runnable {
+    
+    private String threadName;
+    
+    public ThreadLifecycle(String name) {
+        this.threadName = name;
+    }
+    
+    @Override
+    public void run() {
+        System.out.println("Thread " + threadName + " created.");
+        Random rand = new Random();
+        int sleepTime = rand.nextInt(5000);
+        System.out.println("Thread " + threadName + " will sleep for " + sleepTime + "ms.");
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            System.out.println("Thread " + threadName + " interrupted.");
+            return;
+        }
+        System.out.println("Thread " + threadName + " is dead.");
+    }
+
+    public static void main(String[] args) {
+        Thread t1 = new Thread(new ThreadLifecycle("Thread 1"));
+        Thread t2 = new Thread(new ThreadLifecycle("Thread 2"));
+        Thread t3 = new Thread(new ThreadLifecycle("Thread 3"));
+        
+        t1.start();
+        t2.start();
+        t3.start();
+    }
+}

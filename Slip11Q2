@@ -1,0 +1,39 @@
+ Write a Java program to display information about all columns in the DONAR table
+using ResultSetMetaData. 
+----------------------------------------------------------------------------------------------
+
+import java.sql.*;
+
+public class DonarTableColumnInfo {
+    public static void main(String[] args) {
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/mydb", "username", "password");
+
+            Statement stmt = con.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM DONAR");
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            int numCols = rsmd.getColumnCount();
+
+            for (int i = 1; i <= numCols; i++) {
+                System.out.println("Column Name: " + rsmd.getColumnName(i));
+                System.out.println("Column Type: " + rsmd.getColumnTypeName(i));
+                System.out.println("Column Size: " + rsmd.getColumnDisplaySize(i));
+                System.out.println();
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e);
+        }
+    }
+}

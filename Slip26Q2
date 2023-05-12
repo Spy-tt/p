@@ -1,0 +1,42 @@
+Write a JSP program to calculate sum of first and last digit of a given number. Display
+sum in Red Color with font size 18. 
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sum of First and Last Digit</title>
+	<style>
+		body {
+			font-size: 18px;
+		}
+		.red {
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<%
+
+		int number = Integer.parseInt(request.getParameter("number"));
+
+		int firstDigit = number;
+		while (firstDigit >= 10) {
+			firstDigit /= 10;
+		}
+
+		int lastDigit = number % 10;
+
+		int sum = firstDigit + lastDigit;
+	%>
+
+	<p>The sum of first and last digit of <%= number %> is:</p>
+	<p class="red"><%= sum %></p>
+</body>
+</html>

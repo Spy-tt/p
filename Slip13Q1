@@ -1,0 +1,43 @@
+Write a Java program to display information about the database and list all the tables in
+the database. (Use DatabaseMetaData). 
+------------------------------------------------------------------------
+
+import java.sql.*;
+
+public class DatabaseInfo {
+
+   public static void main(String[] args) {
+      Connection conn = null;
+
+      try {
+
+         conn = DriverManager.getConnection("jdbc:mysql://localhost/mydatabase", "username", "password");
+
+         DatabaseMetaData dbmd = conn.getMetaData();
+
+         System.out.println("Database Name: " + dbmd.getDatabaseProductName());
+         System.out.println("Database Version: " + dbmd.getDatabaseProductVersion());
+         System.out.println("Driver Name: " + dbmd.getDriverName());
+         System.out.println("Driver Version: " + dbmd.getDriverVersion());
+
+         ResultSet tables = dbmd.getTables(null, null, "%", new String[] {"TABLE"});
+         System.out.println("\nTables:");
+         while (tables.next()) {
+            System.out.println(tables.getString("TABLE_NAME"));
+         }
+
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } finally {
+
+         try {
+            if (conn != null) {
+               conn.close();
+            }
+         } catch (SQLException ex) {
+            ex.printStackTrace();
+         }
+      }
+   }
+
+}

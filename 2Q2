@@ -1,0 +1,52 @@
+Design a servlet that provides information about a HTTP request from a client, such as
+IP-Address and browser type. The servlet also provides information about the server on
+which the servlet is running, such as the operating system type, and the names of
+currently loaded servlets. 
+-------------------------------------------------------------------------------------------------------
+
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class RequestInfoServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+
+        PrintWriter out = response.getWriter();
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Request Information</title>");
+        out.println("</head>");
+        out.println("<body>");
+
+        // Client IP address
+        String clientIP = request.getRemoteAddr();
+        out.println("<p>Client IP Address: " + clientIP + "</p>");
+
+        // Browser type
+        String browser = request.getHeader("User-Agent");
+        out.println("<p>Browser Type: " + browser + "</p>");
+
+        // Server information
+        out.println("<h2>Server Information</h2>");
+        out.println("<p>Server Name: " + request.getServerName() + "</p>");
+        out.println("<p>Server Port: " + request.getServerPort() + "</p>");
+        out.println("<p>Server OS: " + System.getProperty("os.name") + "</p>");
+
+        // Loaded servlets
+        out.println("<h2>Loaded Servlets</h2>");
+        ServletContext servletContext = getServletContext();
+        String[] servletNames = servletContext.getServletNames();
+        for (String servletName : servletNames) {
+            out.println("<p>" + servletName + "</p>");
+        }
+
+        out.println("</body>");
+        out.println("</html>");
+    }
+
+}

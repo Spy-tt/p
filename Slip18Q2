@@ -1,0 +1,67 @@
+Write a SERVLET program in java to accept details of student (SeatNo, Stud_Name,
+Class, Total_Marks). Calculate percentage and grade obtained and display details on
+page. 
+-----------------------------------------------------------------------------------------------
+
+
+
+
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class StudentServlet extends HttpServlet {
+  
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+      
+    response.setContentType("text/html");
+    PrintWriter out = response.getWriter();
+      
+    String seatNo = request.getParameter("seatNo");
+    String studName = request.getParameter("studName");
+    String studClass = request.getParameter("studClass");
+    String totalMarksStr = request.getParameter("totalMarks");
+    
+    int totalMarks = Integer.parseInt(totalMarksStr);
+    double percentage = (double) totalMarks / 5;
+    String grade;
+    
+    if (percentage >= 90) {
+      grade = "A+";
+    } else if (percentage >= 80) {
+      grade = "A";
+    } else if (percentage >= 70) {
+      grade = "B+";
+    } else if (percentage >= 60) {
+      grade = "B";
+    } else if (percentage >= 50) {
+      grade = "C";
+    } else {
+      grade = "F";
+    }
+    
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<title>Student Details</title>");
+    out.println("</head>");
+    out.println("<body>");
+    out.println("<h1>Student Details</h1>");
+    out.println("<p>Seat No: " + seatNo + "</p>");
+    out.println("<p>Student Name: " + studName + "</p>");
+    out.println("<p>Class: " + studClass + "</p>");
+    out.println("<p>Total Marks: " + totalMarks + "</p>");
+    out.println("<p>Percentage: " + percentage + "</p>");
+    out.println("<p>Grade: " + grade + "</p>");
+    out.println("</body>");
+    out.println("</html>");
+  }
+  
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+      
+    doPost(request, response);
+  }
+  
+}

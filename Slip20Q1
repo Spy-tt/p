@@ -1,0 +1,69 @@
+Create a JSP page to accept a number from a user and display it in words: Example:
+123 – One Two Three. The output should be in red color. 
+
+
+-----------------------------------------------------------------------------------------
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Number to Words Converter</title>
+</head>
+<body>
+	<h1>Number to Words Converter</h1>
+	<form method="post" action="convert.jsp">
+		<label for="number">Enter a number:</label>
+		<input type="text" name="number" id="number" required>
+		<button type="submit">Convert</button>
+	</form>
+	<br>
+	<%
+
+		String numberStr = request.getParameter("number");
+		if (numberStr != null) {
+			try {
+
+				int number = Integer.parseInt(numberStr);
+				String[] ones = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+				String[] tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+				String[] thousands = {"", "Thousand", "Million", "Billion", "Trillion"};
+				String words = "";
+				for (int i = 0; i < thousands.length && number > 0; i++) {
+					if (number % 1000 != 0) {
+						words = convertLessThanThousand(number % 1000, ones, tens) + thousands[i] + " " + words;
+					}
+					number /= 1000;
+				}
+				if (words.isEmpty()) {
+					words = "Zero";
+				}
+
+				out.print("<span style='color:red;'>" + words + "</span>");
+			} catch (NumberFormatException e) {
+				out.print("Invalid number format");
+			}
+		}
+
+		private String convertLessThanThousand(int number, String[] ones, String[] tens) {
+			String words = "";
+			if (number % 100 < 20) {
+				words = ones[number % 100];
+				number /= 100;
+			} else {
+				words = ones[number % 10];
+				number /= 10;
+				words = tens[number % 10] + " " + words;
+				number /= 10;
+			}
+			if (number > 0) {
+				words = ones[number] + " Hundred " + words;
+			}
+			return words;
+		}
+	%>
+</body>
+</html>

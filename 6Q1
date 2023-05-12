@@ -1,0 +1,54 @@
+Write a Java program to accept ‘n’ integers from the user and store them in a collection.
+Display them in the sorted order. The collection should not accept duplicate elements.
+(Use a suitable collection). Search for a particular element using predefined search
+method in the Collection framework. 
+-----------------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+public class IntegerCollection {
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        Set<Integer> set = new HashSet<>();
+
+        
+        System.out.print("Enter number of integers: ");
+        int n = input.nextInt();
+
+        System.out.println("Enter " + n + " integers: ");
+        for (int i = 0; i < n; i++) {
+            int num = input.nextInt();
+
+            
+            if (!set.contains(num)) {
+                set.add(num);
+            }
+        }
+
+     
+        List<Integer> sortedList = new ArrayList<>(set);
+        Collections.sort(sortedList);
+
+    
+        System.out.println("Sorted list of integers:");
+        for (Integer num : sortedList) {
+            System.out.println(num);
+        }
+
+        
+        System.out.print("Enter an integer to search: ");
+        int searchNum = input.nextInt();
+
+        if (set.contains(searchNum)) {
+            System.out.println(searchNum + " found in the collection.");
+        } else {
+            System.out.println(searchNum + " not found in the collection.");
+        }
+    }
+}

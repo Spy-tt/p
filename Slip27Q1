@@ -1,0 +1,48 @@
+Write a Java Program to display the details of College (CID, CName, address, Year)
+on JTable. 
+-----------------------------------------------------------------------------------
+
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CollegeDetailsTable extends JFrame {
+
+    private JTable table;
+
+    public CollegeDetailsTable() {
+
+        setTitle("College Details Table");
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new Object[]{"CID", "CName", "Address", "Year"});
+
+        List<Object[]> colleges = new ArrayList<>();
+        colleges.add(new Object[]{"101", "ABC College", "123 Main Street", "2022"});
+        colleges.add(new Object[]{"102", "XYZ College", "456 Oak Avenue", "2023"});
+        colleges.add(new Object[]{"103", "PQR College", "789 Elm Drive", "2024"});
+
+        for (Object[] college : colleges) {
+            model.addRow(college);
+        }
+
+        table = new JTable(model);
+
+        table.setRowHeight(30);
+        table.setAutoCreateRowSorter(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public static void main(String[] args) {
+        CollegeDetailsTable frame = new CollegeDetailsTable();
+        frame.setVisible(true);
+    }
+}

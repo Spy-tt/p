@@ -1,0 +1,79 @@
+Write a Java Program to create a PROJECT table with field’s project_id, Project_name,
+Project_description, Project_Status. Insert values in the table. Display all the details of
+the PROJECT table in a tabular format on the screen.(using swing). 
+----------------------------------------------------------------------------------------------
+
+import java.awt.BorderLayout;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+public class ProjectTableDisplay extends JFrame {
+
+    private JTable projectTable;
+
+    public ProjectTableDisplay() {
+        super("Project Table Display");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+        String[] columnNames = {"Project ID", "Project Name", "Project Description", "Project Status"};
+
+        String[][] rowData = getProjectTableData();
+
+        projectTable = new JTable(rowData, columnNames);
+
+        JScrollPane scrollPane = new JScrollPane(projectTable);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(mainPanel);
+
+        setVisible(true);
+    }
+
+    private String[][] getProjectTableData() {
+        String[][] rowData = null;
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/mydatabase", "root", "password");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM PROJECT");
+
+            int rowCount = 0;
+            while (rs.next()) {
+                rowCount++;
+            }
+
+            rowData = new String[rowCount][4];
+
+            rs.beforeFirst();
+            int index = 0;
+            while (rs.next()) {
+                rowData[index][0] = rs.getString("project_id");
+                rowData[index][1] = rs.getString("project_name");
+                rowData[index][2] = rs.getString("project_description");
+                rowData[index][3] = rs.getString("project_status");
+                index++;
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return rowData;
+    }
+
+    public static void main(String[] args) {
+        new ProjectTableDisplay();
+    }
+
+}

@@ -1,0 +1,71 @@
+Write a Java program to display first record from student table (RNo, SName, Per) onto
+the TextFields by clicking on button. (Assume Student table is already created). 
+-------------------------------------------------------------------------------------------------
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+
+public class DisplayStudentRecord extends JFrame implements ActionListener {
+    private JTextField rnoField, nameField, perField;
+    private JButton showButton;
+    private Connection conn;
+
+    public DisplayStudentRecord() {
+        super("Display Student Record");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 200);
+
+        rnoField = new JTextField(10);
+        nameField = new JTextField(10);
+        perField = new JTextField(10);
+        rnoField.setEditable(false);
+        nameField.setEditable(false);
+        perField.setEditable(false);
+
+        showButton = new JButton("Show");
+        showButton.addActionListener(this);
+
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+        panel.add(new JLabel("Roll No:"));
+        panel.add(rnoField);
+        panel.add(new JLabel("Name:"));
+        panel.add(nameField);
+        panel.add(new JLabel("Percentage:"));
+        panel.add(perField);
+        panel.add(new JLabel());
+        panel.add(showButton);
+        add(panel);
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "password");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM student");
+            if (rs.next()) {
+                rnoField.setText(rs.getString("RNo"));
+                nameField.setText(rs.getString("SName"));
+                perField.setText(rs.getString("Per"));
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        DisplayStudentRecord frame = new DisplayStudentRecord();
+        frame.setVisible(true);
+    }
+}

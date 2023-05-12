@@ -1,0 +1,39 @@
+Write a java program to blink image on the JFrame continuously. 
+
+-------------------------------------------------------------------
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BlinkingImage extends JFrame implements ActionListener {
+    private JLabel label;
+    private Timer timer;
+    private boolean visible = false;
+    
+    public BlinkingImage() {
+        super("Blinking Image");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 300);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setLayout(new BorderLayout());
+        
+        ImageIcon imageIcon = new ImageIcon("image.png");
+        label = new JLabel(imageIcon);
+        add(label, BorderLayout.CENTER);
+        
+        timer = new Timer(500, this);
+        timer.start();
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        visible = !visible;
+        label.setVisible(visible);
+    }
+    
+    public static void main(String[] args) {
+        BlinkingImage frame = new BlinkingImage();
+        frame.setVisible(true);
+    }
+}

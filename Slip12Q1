@@ -1,0 +1,29 @@
+Write a JSP program to check whether given number is Perfect or not. (Use Include
+directive).
+----------------------------------------------------------------------------------------
+
+<%@ page contentType="text/html; charset=UTF-8" %>
+<html>
+<head>
+	<title>Perfect Number Checker</title>
+</head>
+<body>
+	<h1>Perfect Number Checker</h1>
+	<%
+
+		%><%@ include file="divisors.jsp" %><%
+
+		int num = Integer.parseInt(request.getParameter("number"));
+
+		int sum = getSumOfDivisors(num);
+
+		boolean isPerfect = (num == sum - num);
+
+		if (isPerfect) {
+			out.println("<p>" + num + " is a perfect number.</p>");
+		} else {
+			out.println("<p>" + num + " is not a perfect number.</p>");
+		}
+	%>
+</body>
+</html>

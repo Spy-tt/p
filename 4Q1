@@ -1,0 +1,37 @@
+Write a Java program using Runnable interface to blink Text on the frame. 
+-------------------------------------------------------------------------------------------------------
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class BlinkingText implements Runnable {
+    private JLabel label;
+
+    public BlinkingText(JLabel label) {
+        this.label = label;
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                label.setVisible(!label.isVisible());
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Blinking Text");
+        JLabel label = new JLabel("Hello, World!");
+        frame.add(label);
+        frame.pack();
+        frame.setVisible(true);
+
+        BlinkingText blinkingText = new BlinkingText(label);
+        Thread thread = new Thread(blinkingText);
+        thread.start();
+    }
+}
+

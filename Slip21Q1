@@ -1,0 +1,28 @@
+Write a java program to accept ‘N’ Subject Names from a user store them into
+LinkedList Collection and Display them by using Iterator interface. 
+
+-----------------------------------------------------------------------------
+
+import java.util.*;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        LinkedList<String> subjects = new LinkedList<String>();
+
+        System.out.print("Enter the number of subjects: ");
+        int n = sc.nextInt();
+
+        for(int i=1; i<=n; i++) {
+            System.out.print("Enter the name of subject " + i + ": ");
+            String subject = sc.next();
+            subjects.add(subject);
+        }
+
+        System.out.println("\nThe subject names are:");
+        Iterator<String> iterator = subjects.iterator();
+        while(iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+}

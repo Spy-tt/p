@@ -1,0 +1,38 @@
+Write a Java program to create LinkedList of String objects and perform the following:
+i. Add element at the end of the list
+ii. Delete first element of the list
+iii. Display the contents of list in reverse order
+
+-------------------------------------------------------------------------------------------------------
+
+
+import java.util.LinkedList;
+
+public class LinkedListExample {
+    public static void main(String[] args) {
+
+        LinkedList<String> linkedList = new LinkedList<String>();
+
+
+        linkedList.add("Apple");
+        linkedList.add("Banana");
+        linkedList.add("Cherry");
+        linkedList.add("Dates");
+
+
+        System.out.println("List Contents: " + linkedList);
+
+
+        linkedList.removeFirst();
+
+
+        System.out.println("List Contents after deletion: " + linkedList);
+
+
+        System.out.print("List Contents in Reverse Order: ");
+        for (int i = linkedList.size() - 1; i >= 0; i--) {
+            System.out.print(linkedList.get(i) + " ");
+        }
+    }
+}
+

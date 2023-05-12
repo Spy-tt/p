@@ -1,0 +1,59 @@
+Write a Java program to create a thread for moving a ball inside a panel vertically. The
+ball should be created when the user clicks on the start button. 
+---------------------------------------------------------------------------------------
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BallPanel extends JPanel implements ActionListener {
+    private JButton startButton;
+    private Ball ball;
+
+    public BallPanel() {
+        setPreferredSize(new Dimension(400, 400));
+        setBackground(Color.WHITE);
+        startButton = new JButton("Start");
+        startButton.addActionListener(this);
+        add(startButton);
+    }
+
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() == startButton) {
+            ball = new Ball();
+            add(ball);
+            new Thread(ball).start();
+            startButton.setEnabled(false);
+        }
+    }
+
+    private class Ball extends JPanel implements Runnable {
+        private int y = 0;
+
+        public Ball() {
+            setPreferredSize(new Dimension(50, 50));
+            setBackground(Color.RED);
+        }
+
+        public void run() {
+            while (y <= getHeight() - 50) {
+                y += 10;
+                setLocation(getX(), y);
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            startButton.setEnabled(true);
+        }
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Ball Panel");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new BallPanel());
+        frame.pack();
+        frame.setVisible(true);
+    }
+}

@@ -1,0 +1,130 @@
+Write a java program that implements a multi-thread application that has three threads.
+First thread generates random integer number after every one second, if the number is
+even; second thread computes the square of that number and print it. If the number is
+odd, the third thread computes the of cube of that number and print it.
+----------------------------------------------------------------------------------------
+
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
+        EvenNumberProcessor evenNumberProcessor = new EvenNumberProcessor();
+        OddNumberProcessor oddNumberProcessor = new OddNumberProcessor();
+        
+        Thread thread1 = new Thread(randomNumberGenerator);
+        Thread thread2 = new Thread(evenNumberProcessor);
+        Thread thread3 = new Thread(oddNumberProcessor);
+        
+        thread1.start();
+        thread2.start();
+        thread3.start();
+    }
+}
+
+class RandomNumberGenerator implements Runnable {
+    private Random random;
+    
+    public RandomNumberGenerator() {
+        random = new Random();
+    }
+    
+    @Override
+    public void run() {
+        while (true) {
+            int number = random.nextInt(10);
+            System.out.println("Generated number: " + number);
+            if (number % 2 == 0) {
+                EvenNumberProcessor.numberQueue.add(number);
+            } else {
+                OddNumberProcessor.numberQueue.add(number);
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+class EvenNumberProcessor implements Runnable {
+    public static final NumberQueue numberQueue = new NumberQueue();
+    
+    @Override
+    public void run() {
+        while (true) {
+            if (!numberQueue.isEmpty()) {
+                int number = numberQueue.remove();
+                if (number % 2 == 0) {
+                    int square = number * number;
+                    System.out.println("Square of " + number + ": " + square);
+                }
+            }
+        }
+    }
+}
+
+class OddNumberProcessor implements Runnable {
+    public static final NumberQueue numberQueue = new NumberQueue();
+    
+    @Override
+    public void run() {
+        while (true) {
+            if (!numberQueue.isEmpty()) {
+                int number = numberQueue.remove();
+                if (number % 2 == 1) {
+                    int cube = number * number * number;
+                    System.out.println("Cube of " + number + ": " + cube);
+                }
+            }
+        }
+    }
+}
+
+class NumberQueue {
+    private final int[] queue;
+    private int head;
+    private int tail;
+    private int size;
+    
+    public NumberQueue() {
+        queue = new int[10];
+        head = 0;
+        tail = 0;
+        size = 0;
+    }
+    
+    public synchronized void add(int number) {
+        if (size == queue.length) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        queue[tail] = number;
+        tail = (tail + 1) % queue.length;
+        size++;
+        notifyAll();
+    }
+    
+    public synchronized int remove() {
+        while (size == 0) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        int number = queue[head];
+        head = (head + 1) % queue.length;
+        size--;
+        notifyAll();
+        return number;
+    }
+    
+    public synchronized boolean isEmpty() {
+        return size == 0;
+    }
+}

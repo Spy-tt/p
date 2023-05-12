@@ -1,0 +1,78 @@
+Write a Java program to accept the details of Teacher (TNo, TName, Subject). Insert at
+least 5 Records into Teacher Table and display the details of Teacher who is teaching
+“JAVA” Subject. (Use PreparedStatement Interface) 
+--------------------------------------------------------------------------------------------
+
+import java.sql.*;
+
+public class TeacherDetails {
+    public static void main(String[] args) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "password");
+
+            String sql = "INSERT INTO Teacher (TNo, TName, Subject) VALUES (?, ?, ?)";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, 101);
+            pstmt.setString(2, "John Doe");
+            pstmt.setString(3, "JAVA");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 102);
+            pstmt.setString(2, "Jane Doe");
+            pstmt.setString(3, "C++");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 103);
+            pstmt.setString(2, "Bob Smith");
+            pstmt.setString(3, "JAVA");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 104);
+            pstmt.setString(2, "Alice Johnson");
+            pstmt.setString(3, "Python");
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 105);
+            pstmt.setString(2, "Tom Wilson");
+            pstmt.setString(3, "JAVA");
+            pstmt.executeUpdate();
+
+            sql = "SELECT TNo, TName FROM Teacher WHERE Subject=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "JAVA");
+            rs = pstmt.executeQuery();
+
+            System.out.println("Details of teachers who are teaching JAVA subject:");
+            while (rs.next()) {
+                int tno = rs.getInt("TNo");
+                String tname = rs.getString("TName");
+                System.out.println("TNo: " + tno + ", TName: " + tname);
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+
+            try {
+                if (rs != null)
+                    rs.close();
+                if (pstmt != null)
+                    pstmt.close();
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

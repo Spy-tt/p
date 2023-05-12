@@ -1,0 +1,19 @@
+Write a Java program to display the Current Date using spring. 
+-------------------------------------------------------------------
+
+import java.time.LocalDate;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class DisplayCurrentDate {
+    public static void main(String[] args) {
+    
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
+
+       
+        LocalDate currentDate = LocalDate.now();
+
+       
+        System.out.println(context.getMessage("current.date.message", new Object[] {currentDate}, null));
+    }
+}

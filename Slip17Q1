@@ -1,0 +1,26 @@
+Write a java program to accept ‘N’ integers from a user. Store and display integers in
+sorted order having proper collection class. The collection should not accept duplicate
+elements. 
+-------------------------------------------------------------------------------------------
+
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class SortedIntegers {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of integers: ");
+        int n = sc.nextInt();
+        TreeSet<Integer> set = new TreeSet<>();
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter an integer: ");
+            int num = sc.nextInt();
+            set.add(num);
+        }
+        System.out.print("The sorted integers without duplicates are: ");
+        for (int num : set) {
+            System.out.print(num + " ");
+        }
+        sc.close();
+    }
+}

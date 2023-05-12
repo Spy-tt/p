@@ -1,0 +1,74 @@
+. Write a Java program to store city names and their STD codes using an appropriate
+collection and perform following operations:
+i. Add a new city and its code (No duplicates)
+ii. Remove a city from the collection
+iii. Search for a city name and display the code 
+
+-------------------------------------------------------------------------------------------------------
+
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class CityCode {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Integer> cityCodes = new HashMap<String, Integer>();
+
+        cityCodes.put("Delhi", 11);
+        cityCodes.put("Mumbai", 22);
+        cityCodes.put("Chennai", 44);
+        cityCodes.put("Kolkata", 33);
+
+        while (true) {
+            System.out.println("\nCity Codes: " + cityCodes);
+            System.out.println("1. Add a new city and its code");
+            System.out.println("2. Remove a city from the collection");
+            System.out.println("3. Search for a city name and display the code");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter city name: ");
+                    String city = scanner.nextLine();
+                    System.out.print("Enter STD code: ");
+                    int code = scanner.nextInt();
+                    if (!cityCodes.containsKey(city)) {
+                        cityCodes.put(city, code);
+                        System.out.println("City code added successfully.");
+                    } else {
+                        System.out.println("City already exists.");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Enter city name: ");
+                    city = scanner.nextLine();
+                    if (cityCodes.containsKey(city)) {
+                        cityCodes.remove(city);
+                        System.out.println("City code removed successfully.");
+                    } else {
+                        System.out.println("City does not exist.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter city name: ");
+                    city = scanner.nextLine();
+                    if (cityCodes.containsKey(city)) {
+                        code = cityCodes.get(city);
+                        System.out.println("STD code for " + city + " is " + code);
+                    } else {
+                        System.out.println("City does not exist.");
+                    }
+                    break;
+                case 4:
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}
